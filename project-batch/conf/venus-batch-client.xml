@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<venus-client xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="venus-client.xsd">
+ 
+	<remotes>
+		<remote name="defaultRemote15" loadbalance="1">
+			<!-- 与远程连接的socket相关的配置 -->
+			<factory>
+				<!-- 支持多节点负责均衡的高可用配置，默认采用轮询  -->
+				<!-- <property name="ipAddressList">${venus.service.callcenterService.ipAddressList}</property> -->
+				 <!-- <property name="ipAddressList">${global.venus.common.promotion.ipAddressList}</property> --> 
+				<property name="ipAddressList">${service.venus.bus.ipAddressList}</property>
+				
+				<!-- socket的sendBuffer缓冲区大小，单位:K -->
+				<property name="sendBufferSize">${global.venus.common.remote.sendBufferSize}
+				</property>
+
+				<!-- socket的receiveBuffer缓冲区大小，单位:K -->
+				<property name="receiveBufferSize">${global.venus.common.remote.receiveBufferSize}
+				</property>
+
+				<property name="soTimeout">${global.venus.common.remote.soTimeout}
+				</property>
+				
+			</factory>
+			
+			<!-- 与每个远程节点的连接池配置，与apache的commons-pool配置一致 -->
+			<pool>
+				<property name="maxActive">${global.venus.common.remote.maxActive}
+				</property>
+				<property name="maxIdle">${global.venus.common.remote.maxIdle}
+				</property>
+				<property name="minIdle">${global.venus.common.remote.minIdle}
+				</property>
+				<property name="minEvictableIdleTimeMillis">${global.venus.common.remote.minEvictableIdleTimeMillis}
+				</property>
+				<property name="timeBetweenEvictionRunsMillis">${global.venus.common.remote.timeBetweenEvictionRunsMillis}
+				</property>
+				<property name="testOnBorrow">${global.venus.common.remote.testOnBorrow}
+				</property>
+				<property name="testWhileIdle">${global.venus.common.remote.testWhileIdle}
+				</property>
+			</pool>
+			
+			<!-- 用户名、密码认证方式  -->
+			<authenticator class="com.meidusa.venus.client.authenticate.UserPasswordAuthenticator">
+				<property name="username">venus</property>
+				<property name="password">venus</property>
+				<!-- 对象系列化方式，目前支持3种 ： 0:json ,1：bson , 2: java对象系列化 -->
+				<property name="serializeType">${global.venus.common.remote.serializeType}</property>
+			</authenticator>
+			
+			<!-- 采用 Dummy方式 认证 -->
+			<!-- 
+			<authenticator class="com.meidusa.venus.client.authenticate.DummyAuthenticator">
+				<property name="serializeType">${venus.service.helloService.serializeType}</property>
+			</authenticator>
+			 -->
+		</remote>
+		
+		<remote name="ebizDopRemote" loadbalance="1">
+			<!-- 与远程连接的socket相关的配置 -->
+			<factory>
+				<!-- 支持多节点负责均衡的高可用配置，默认采用轮询 -->
+				<!-- <property name="ipAddressList">${global.venus.common.promotion.ipAddressList}</property> -->
+				<property name="ipAddressList">${service.venus.bus.ipAddressList}</property>
+				
+
+				<!-- socket的sendBuffer缓冲区大小，单位:K -->
+				<property name="sendBufferSize">${global.venus.common.remote.sendBufferSize}
+				</property>
+
+				<!-- socket的receiveBuffer缓冲区大小，单位:K -->
+				<property name="receiveBufferSize">${global.venus.common.remote.receiveBufferSize}
+				</property>
+
+				<property name="soTimeout">${global.venus.common.remote.soTimeout}
+				</property>
+				
+			</factory>
+			
+			<!-- 与每个远程节点的连接池配置，与apache的commons-pool配置一致 -->
+			<pool>
+				<property name="maxActive">${global.venus.common.remote.maxActive}
+				</property>
+				<property name="maxIdle">${global.venus.common.remote.maxIdle}
+				</property>
+				<property name="minIdle">${global.venus.common.remote.minIdle}
+				</property>
+				<property name="minEvictableIdleTimeMillis">${global.venus.common.remote.minEvictableIdleTimeMillis}
+				</property>
+				<property name="timeBetweenEvictionRunsMillis">${global.venus.common.remote.timeBetweenEvictionRunsMillis}
+				</property>
+				<property name="testOnBorrow">${global.venus.common.remote.testOnBorrow}
+				</property>
+				<property name="testWhileIdle">${global.venus.common.remote.testWhileIdle}
+				</property>
+			</pool>
+			
+			<!-- 用户名、密码认证方式  -->
+			<authenticator class="com.meidusa.venus.client.authenticate.UserPasswordAuthenticator">
+				<property name="username">venus</property>
+				<property name="password">venus</property>
+				<!-- 对象系列化方式，目前支持3种 ： 0:json ,1：bson , 2: java对象系列化 -->
+				<property name="serializeType">${global.venus.common.remote.serializeType}</property>
+			</authenticator>
+			
+			
+			<!-- 采用 Dummy方式 认证 -->
+			<!-- <authenticator
+				class="com.meidusa.venus.client.authenticate.DummyAuthenticator">
+				<property name="serializeType">${venus.common.remote.serializeType}
+				</property>
+			</authenticator> -->
+		</remote>
+		
+	</remotes>
+	<!-- 服务接口列表 -->
+	<services>
+		<service  type="com.saic.ebiz.eadccc.service.api.callcenter.IMaintenanceService" remote="defaultRemote15"></service>
+		<service  type="com.saic.ebiz.dop.service.store.api.IStoreService" remote="ebizDopRemote"></service>
+	</services>
+</venus-client>

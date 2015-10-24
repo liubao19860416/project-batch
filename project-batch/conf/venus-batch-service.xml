@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<venus-server>
+	<services>
+		<service type="com.saike.ebiz.grape.service.api.BatchCallCenterService">
+			<instance class="com.saike.grape.callcenter.sevice.impl.BatchCallCenterServiceImpl" />
+		</service>
+	</services>
+</venus-server>

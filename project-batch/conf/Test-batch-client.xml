@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<venus-client xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="venus-client.xsd">
+ 
+	<remotes>
+		<remote name="batchCallcenter" loadbalance="1">
+			<!-- 与远程连接的socket相关的配置 -->
+			<factory>
+				<!-- 支持多节点负责均衡的高可用配置，默认采用轮询 -->
+				<!-- <property name="ipAddressList">${global.venus.common.promotion.ipAddressList}</property> -->
+				<!-- SIT --> <property name="ipAddressList">10.32.140.83:16800</property>
+				<!-- <property name="ipAddressList">10.32.119.81:16800</property> -->
+				
+
+				<!-- socket的sendBuffer缓冲区大小，单位:K -->
+				<property name="sendBufferSize">64
+				</property>
+
+				<!-- socket的receiveBuffer缓冲区大小，单位:K -->
+				<property name="receiveBufferSize">64
+				</property>
+
+				<property name="soTimeout">50000
+				</property>
+				
+			</factory>
+			
+			<!-- 与每个远程节点的连接池配置，与apache的commons-pool配置一致 -->
+			<pool>
+				<property name="maxActive">10</property>
+				<property name="maxIdle">1</property>
+				<property name="minIdle">1</property>
+				<property name="minEvictableIdleTimeMillis">60000</property>
+				<property name="timeBetweenEvictionRunsMillis">60000</property>
+				<property name="testOnBorrow">true</property>
+				<property name="testWhileIdle">true</property>
+			</pool>
+			
+			<!-- 用户名、密码认证方式  -->
+			<authenticator class="com.meidusa.venus.client.authenticate.UserPasswordAuthenticator">
+				<property name="username">venus</property>
+				<property name="password">venus</property>
+				<!-- 对象系列化方式，目前支持3种 ： 0:json ,1：bson , 2: java对象系列化 -->
+				<property name="serializeType">0</property>
+			</authenticator>
+			
+			
+			<!-- 采用 Dummy方式 认证 -->
+			<!-- <authenticator
+				class="com.meidusa.venus.client.authenticate.DummyAuthenticator">
+				<property name="serializeType">${venus.common.remote.serializeType}
+				</property>
+			</authenticator> -->
+		</remote>
+		
+	</remotes>
+	<!-- 服务接口列表 -->
+	<services>
+		<service  type="com.saic.callcenter.ebiz.service.BatchCallCenterService" remote="batchCallcenter"></service>
+	</services>
+</venus-client>
